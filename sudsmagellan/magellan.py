@@ -4,9 +4,10 @@ Created on Aug 31, 2010
 @author: Chris Glass (tribaal@gmail.com)
 '''
 
+from optparse import OptionParser
 from suds.client import Client
-import re
 from suds.transport.https import WindowsHttpAuthenticated
+import re
 
 class WindowsHttpAuthenticatedWithoutCarriageReturns(WindowsHttpAuthenticated):
     """This class is needed to talk to microsoft webservices, since they expect messages without any linefeeds and
@@ -92,9 +93,27 @@ class Cartographer():
 
     
 if __name__ == '__main__':
+    parser = OptionParser()
+    parser.add_option("-u", "--url", action="store_const", const=0, dest="url")
+    parser.add_option("-n", "--username", action="store_const", const=2, dest="username")
+    parser.add_option("-p", "--password", action="store_const", const=0, dest="password")
+    
+    options, args = parser.parse_args()
+    
+    
     url = '' # Put a nice URL here
     user='' # Your username, if any
     passw='' # Your passowrd if any
+    
+    if options['url']:
+        url = options['url']
+        
+    if options['password']:
+        passw = options['password']
+    
+    if options['username']:
+        user = options['username']
+        
     ntlm = WindowsHttpAuthenticatedWithoutCarriageReturns(username=user, password=passw)
     c = Cartographer(ntlm)
     c.print_map(url)

@@ -22,6 +22,6 @@ setup(
     packages=find_packages(exclude=['tests']),
     license= "GPL2",
     long_description=read('README'),
-    install_requires=['python-ntlm', 'suds'],
+    install_requires=['python-ntlm', 'suds', 'optparse'],
     url="",
 )
