@@ -1,0 +1,21 @@
+SUDS-MAGELLAN
+-------------
+
+This project's goal is to provide a slightly more comprehensive and readable webservice map that the default
+print method for the webservice client that comes with SUDS.
+
+Requirement:
+* You need suds [1] installed in all cases (obviously): sudo easy_install suds
+* In the current state of the code you also need to have python-ntlm [2] installed: unfortunately this is not yet
+available in pypi, so the best you can do is:
+
+  svn co http://python-ntlm.googlecode.com/svn/trunk/ python-ntlm-read-only
+  cd python-ntlm-read-only
+  sudo python setup.py install
+
+
+
+
+links:
+[1]: https://fedorahosted.org/suds/
+[2]: http://code.google.com/p/python-ntlm/
