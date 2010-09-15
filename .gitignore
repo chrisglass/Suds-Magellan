@@ -1,0 +1,5 @@
+# Let's ignore all the .pyc
+*.pyc
+
+#Ignore the divio-specific main
+divio.py
