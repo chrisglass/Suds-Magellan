@@ -8,6 +8,7 @@ from optparse import OptionParser
 from suds.client import Client
 from suds.transport.https import WindowsHttpAuthenticated
 import re
+from painters import default_painter
 
 class WindowsHttpAuthenticatedWithoutCarriageReturns(WindowsHttpAuthenticated):
     """This class is needed to talk to microsoft webservices, since they expect messages without any linefeeds and
