@@ -26,8 +26,9 @@ class Cartographer():
     client = None
     transport = None
     
-    def __init__(self, transport=None):
+    def __init__(self, transport=None, painter=default_painter()):
         self.transport = transport
+        self.painter = painter
         
     def create_client(self, wsdl_url):
         client = None
@@ -43,10 +44,7 @@ class Cartographer():
         """
             Prints the map for the webservice
         """
-        print '*' * 20
-        print "MAGELLAN MAP FOR %s" % wsdl_url
-        print '*' * 20
-        print '*' * 20
+        self.painter.paint_map_header(wsdl_url)
         self.create_client(wsdl_url)
         self.print_methods(self.client)
         self.print_types(self.client)
@@ -55,40 +53,24 @@ class Cartographer():
     def print_types(self,client):
         for service_def in client.sd :
         # For each service definition (There can be several)
-            xlate = service_def.xlate
-
-            print 'TYPES:'
-            print '*' * 20
+            self.painter.paint_types_header()
             for type in service_def.types:
-                webservice_object = client.factory.create(xlate(type[0]))
-                print webservice_object  
+                self.painter.paint_type(type, service_def, client)
             
             
     def print_methods(self,client):
         
         for service_def in client.sd :
             # For each service definition (There can be several)
-            xlate = service_def.xlate
             
-            print 'METHODS:'
-            print '*' * 20
+            self.painter.paint_methods_header()
             """
             This piece of shit is so complex to read it hurts my brain. WTF did they use single char variable names
             in a modern programming language is beyond me
             """
             for port in service_def.ports:
                 for method in port[1]: # Suds source is full of magic numbers. Theses guys are C engineers!!!
-                    method_name = method[0]
-                    signature = []
-                    signature.append('(')
-                    for signature_elt in method[1]:
-                        signature.append(xlate(signature_elt[1]))
-                        signature.append(' ')
-                        signature.append(signature_elt[0])
-                        signature.append(', ')
-                    signature.append(')')
-                    string_signature = ''.join(signature)
-                    print "%s %s" % (method_name, string_signature)
+                    self.painter.paint_method(method, service_def)
     
 
     
